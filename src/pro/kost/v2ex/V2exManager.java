@@ -1,7 +1,9 @@
 package pro.kost.v2ex;
 
+import pro.kost.v2ex.beans.Member;
 import pro.kost.v2ex.beans.Node;
 import pro.kost.v2ex.beans.NodeList;
+import pro.kost.v2ex.beans.ReplyList;
 import pro.kost.v2ex.beans.SiteInfo;
 import pro.kost.v2ex.beans.SiteStats;
 import pro.kost.v2ex.beans.TopicList;
@@ -68,8 +70,24 @@ public class V2exManager {
 	 */
 	public static void getTopics(String key, String value, AbsRequest.OnResponse<TopicList> response) {
 		ConcreteRequest request = getConcreteRequest(response);
-		request.executeReadAsync(Addrs.topics_show + "?" + key + "=" + value + "?page=2", TopicList.class);
+		request.executeReadAsync(Addrs.topics_show + "?" + key + "=" + value, TopicList.class);
 	}
 	
+	/**
+	 * 获取回复列表
+	 * 
+	 */
+	public static void getReplies(String id, AbsRequest.OnResponse<ReplyList> response) {
+		ConcreteRequest request = getConcreteRequest(response);
+		request.executeReadAsync(Addrs.replies_show + "?topic_id=" + id, ReplyList.class);
+	}
 	
+	/**
+	 * 获取用户信息
+	 * 
+	 */
+	public static void getMember(String username, AbsRequest.OnResponse<Member> response) {
+		ConcreteRequest request = getConcreteRequest(response);
+		request.executeReadAsync(Addrs.members_show + "?username=" + username, Member.class);
+	}
 }
