@@ -15,14 +15,14 @@ public abstract class AbsRequest {
 	public abstract void executePostAsync (String url,HashMap<String, String> params);
 	public abstract String executePostSync(String url,HashMap<String, String> params);
 	public abstract String executeReadSync(String url);
-	public abstract void executeReadAsync(String url);
+	public abstract <T> void executeReadAsync(String url,Class<T> type);
 	
 	protected OnResponse mOnResponse = null;
 	public void setOnResponse(OnResponse response) {
 		this.mOnResponse = response;
 	}
-	public interface OnResponse{
-		void onRespondResult(String result);
+	public interface OnResponse<T>{
+		void onRespondResult(T result);
 	}
 	public String mapToString(HashMap<String, String> parmas) {
 		StringBuffer urlParams = new StringBuffer();

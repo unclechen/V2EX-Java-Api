@@ -9,7 +9,9 @@ public class Topic {
     public int replies;
     public Member member;
     public Node node;
-    //public Date created;
-    //public Date lastModified;
-    //public Date lastTouched;
+    
+    //注意:v2ex返回的时间后面要加000
+    public long created;
+    public long last_modified;
+    public long last_touched;
 }

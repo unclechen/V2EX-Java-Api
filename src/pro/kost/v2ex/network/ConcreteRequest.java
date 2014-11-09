@@ -11,6 +11,8 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.zip.GZIPInputStream;
 
+import com.google.gson.Gson;
+
 public class ConcreteRequest extends AbsRequest {
 
 	@Override
@@ -25,7 +27,7 @@ public class ConcreteRequest extends AbsRequest {
 			// Create connection
 			url = new URL(targetURL);
 			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
+			connection.setRequestMethod("POST");
 			connection.setRequestProperty("Content-Type",
 					"application/x-www-form-urlencoded");
 
@@ -119,11 +121,25 @@ public class ConcreteRequest extends AbsRequest {
 	}
 
 	@Override
-	public void executeReadAsync(final String url) {
+	public <T> void executeReadAsync(final String url,final Class<T> type) {
 		new Thread(new Runnable() {
 			public void run() {
-				if (mOnResponse != null)
-					mOnResponse.onRespondResult(executeReadSync(url));
+				if (mOnResponse != null) {
+					try {
+						String resultString = executeReadSync(url);
+						System.out.println(resultString);
+						T instance = type.newInstance();
+						instance = new Gson().fromJson(resultString, type);
+						mOnResponse.onRespondResult(instance);
+					} catch (InstantiationException e) {
+						mOnResponse.onRespondResult(null);
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						mOnResponse.onRespondResult(null);
+						e.printStackTrace();
+					}
+					
+				}
 			}
 		}).start();
 	}
