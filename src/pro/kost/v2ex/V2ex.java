@@ -16,9 +16,10 @@ public class V2ex {
 				System.out.println(result);
 			}
 		});
-		request.executeReadAsync(Addrs.nodes_all);
+
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("username", "kost");
+		request.executeReadAsync(Addrs.members_show);
 	}
 
 }
